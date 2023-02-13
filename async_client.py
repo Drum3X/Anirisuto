@@ -1,4 +1,3 @@
-import asyncio
 from .query import AnilistQuery
 from aiohttp import ClientSession
 
@@ -21,11 +20,10 @@ class AsyncClient(AnilistQuery):
         
     async def get_anime_with_id(
         self, 
-        id: int, 
-        page: int = 1
+        id: int,
     ):
         
-        data = await self.get_data(self.anime_with_id, self.get_id_variables(id, page))
+        data = await self.get_data(self.anime_with_id, self.get_id_variables(id))
         
         if "errors" in data.keys():
             return data["errors"][0]["message"]
@@ -38,12 +36,10 @@ class AsyncClient(AnilistQuery):
         
     async def get_manga_with_id(
         self, 
-        id: str, 
-        page: 
-        int = 1
+        id: str,
     ):
         
-        data = await self.get_data(self.manga_with_id, self.get_id_variables(id, page))
+        data = await self.get_data(self.manga_with_id, self.get_id_variables(id))
         
         if "errors" in data.keys():
             return data["errors"][0]["message"]
@@ -56,11 +52,10 @@ class AsyncClient(AnilistQuery):
         
     async def get_character_with_id(
         self, 
-        id: int, 
-        page: int = 1
+        id: int,
     ):
         
-        data = await self.get_data(self.character_with_id, self.get_id_variables(id, page))
+        data = await self.get_data(self.character_with_id, self.get_id_variables(id))
         
         if "errors" in data.keys():
             return data["errors"][0]["message"]
