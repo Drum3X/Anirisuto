@@ -18,10 +18,9 @@ class SyncClient(AnilistQuery):
     def get_anime_with_id(
         self, 
         id: int, 
-        page: int = 1
     ):
         
-        data = self.get_data(self.anime_with_id, self.get_id_variables(id, page))
+        data = self.get_data(self.anime_with_id, self.get_id_variables(id))
         
         if "errors" in data.keys():
             return data["errors"][0]["message"]
@@ -35,11 +34,9 @@ class SyncClient(AnilistQuery):
     def get_manga_with_id(
         self, 
         id: str, 
-        page: 
-        int = 1
     ):
         
-        data = self.get_data(self.manga_with_id, self.get_id_variables(id, page))
+        data = self.get_data(self.manga_with_id, self.get_id_variables(id))
         
         if "errors" in data.keys():
             return data["errors"][0]["message"]
@@ -52,11 +49,10 @@ class SyncClient(AnilistQuery):
         
     def get_character_with_id(
         self, 
-        id: int, 
-        page: int = 1
+        id: int,
     ):
         
-        data = self.get_data(self.character_with_id, self.get_id_variables(id, page))
+        data = self.get_data(self.character_with_id, self.get_id_variables(id))
         
         if "errors" in data.keys():
             return data["errors"][0]["message"]
