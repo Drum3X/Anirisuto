@@ -26,13 +26,12 @@ class AnilistQuery():
     
     def get_id_variables(
         self, 
-        id: int, 
-        page: int
+        id: int,
     ):
         variables = {
             "id": id,
             "page": 1,
-            "perPage": page
+            "perPage": 1
         }
         
         return variables
