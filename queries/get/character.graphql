@@ -17,7 +17,7 @@ query ($id: Int, $page: Int, $perPage: Int) {
             }
             image {
                 medium
-                large
+                large                
             }
             siteUrl
             favourites
@@ -25,12 +25,12 @@ query ($id: Int, $page: Int, $perPage: Int) {
             media {
                 edges {
                     node {
+                        id
                         title {
                             romaji
                             english
                             native
-                        }
-                        id
+                        }                        
                         type
                     }
                 }

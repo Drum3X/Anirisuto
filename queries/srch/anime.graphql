@@ -14,7 +14,7 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
                 english
                 native
             }
-            siteUrl
+            siteUrl            
             episodes
             description
             format
@@ -27,6 +27,7 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
             }
             studios {
                 nodes {
+                    id
                     name
                 }
             }
@@ -77,13 +78,13 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
             staff(sort: FAVOURITES_DESC) {
                 edges {
                     node {
+                        id
                         name {
                             first
                             last
                             full
                             native                                                        
-                        }
-                        id
+                        }                        
                     }
                     role
                 }
@@ -91,13 +92,14 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
             characters(sort: FAVOURITES_DESC) {
                 edges {
                     node {
+                        id
                         name {
                             first
                             last
                             full
                             native                                                            
-                        }
-                        id
+                        }       
+                        favourites                 
                     }
                     role
                 }
@@ -107,24 +109,11 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
                     node {
                         id
                         title {
-                            romaji
-                            english
-                            native
+                            romaji    
+                            english 
+                            native                        
                         }
-                        type
-                        siteUrl
-                        episodes
-                        chapters
-                        description
-                        format
-                        status
-                        isAdult
-                        coverImage {
-                            medium
-                            large
-                            extraLarge
-                        }
-                        bannerImage
+                        type                        
                     }
                     relationType(version: 2)
                 }

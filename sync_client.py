@@ -1,18 +1,28 @@
-from .query import AnilistQuery
+#python modules
 from requests import post
+
+#import queries
+from .queries import AnilistQuery
+
+#import parsers
+from .parsers import (
+    ParseAnime, 
+    ParseManga, 
+    ParseCharacter
+)
 
 class SyncClient(AnilistQuery):
     def __init__(self):
         super().__init__()
-        self.url = "https://graphql.anilist.co"
             
-    def get_data(
+    def _get_data(
         self,         
         query: str, 
         variables: dict,
     ):                
               								        
-        data = post(self.url, json = {'query': query, 'variables': variables}).json()                             
+        data = post(self._url, json = {"query": query, "variables": variables}).json()       
+                              
         return data
         
     def get_anime_with_id(
@@ -20,48 +30,54 @@ class SyncClient(AnilistQuery):
         id: int, 
     ):
         
-        data = self.get_data(self.anime_with_id, self.get_id_variables(id))
+        data = self._get_data(self._anime_with_id, self._get_id_variables(id))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["media"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("media"):
+            return
+       
+        return ParseAnime(result)
         
     def get_manga_with_id(
         self, 
         id: str, 
     ):
         
-        data = self.get_data(self.manga_with_id, self.get_id_variables(id))
+        data = self._get_data(self._manga_with_id, self._get_id_variables(id))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["media"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("media"):
+            return
+        
+        return ParseManga(result)
         
     def get_character_with_id(
         self, 
-        id: int,
+        id: int, 
     ):
         
-        data = self.get_data(self.character_with_id, self.get_id_variables(id))
+        data = self._get_data(self._character_with_id, self._get_id_variables(id))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["characters"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("characters"):
+            return
+                 
+        return ParseCharacter(result)
       
     def get_anime(
         self, 
@@ -69,16 +85,18 @@ class SyncClient(AnilistQuery):
         page: int = 1
     ):
         
-        data = self.get_data(self.anime, self.get_search_variables(search, page))
+        data = self._get_data(self._anime, self._get_search_variables(search, page))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["media"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("media"):
+            return
+          
+        return ParseAnime(result)
        
     def get_manga(
         self, 
@@ -86,16 +104,18 @@ class SyncClient(AnilistQuery):
         page: int = 1
     ):
         
-        data = self.get_data(self.manga, self.get_search_variables(search, page))
+        data = self._get_data(self._manga, self._get_search_variables(search, page))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["media"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("media"):
+            return
+                              
+        return ParseManga(result)
         
     def get_character(
         self, 
@@ -103,13 +123,15 @@ class SyncClient(AnilistQuery):
         page: int = 1
     ):
         
-        data = self.get_data(self.character, self.get_search_variables(search, page))
+        data = self._get_data(self._character, self._get_search_variables(search, page))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["characters"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("characters"):
+            return
+  
+        return ParseCharacter(result)

@@ -15,8 +15,10 @@ query ($id: Int, $page: Int, $perPage: Int) {
                 native
             }
             siteUrl
+            volumes
             chapters
-            description
+            description            
+            format
             status
             genres
             isAdult
@@ -25,6 +27,7 @@ query ($id: Int, $page: Int, $perPage: Int) {
             }
             studios {
                 nodes {
+                    id
                     name
                 }
             }
@@ -61,12 +64,7 @@ query ($id: Int, $page: Int, $perPage: Int) {
                 rank
                 year
                 season
-            }
-            nextAiringEpisode {
-                timeUntilAiring
-                airingAt
-                episode
-            }
+            }            
             trailer {
                 id
                 thumbnail
@@ -75,13 +73,13 @@ query ($id: Int, $page: Int, $perPage: Int) {
             staff(sort: FAVOURITES_DESC) {
                 edges {
                     node {
+                        id
                         name {
                             first
                             full
                             native
                             last
-                        }
-                        id
+                        }                        
                     }
                     role
                 }
@@ -89,43 +87,27 @@ query ($id: Int, $page: Int, $perPage: Int) {
             characters(sort: FAVOURITES_DESC) {
                 edges {
                     node {
+                        id
                         name {
                             first
                             last
                             full
                             native
-                        }
-                        id
+                        }                       
                     }
                     role
                 }
             }
-            volumes
             relations {
                 edges {
                     node {
                         id
                         title {
-                            romaji
-                            english
-                            native
+                            romaji    
+                            english 
+                            native                        
                         }
-                        type
-                        siteUrl
-                        episodes
-                        chapters
-                        description
-                        format
-                        status
-                        duration
-                        genres
-                        isAdult
-                        coverImage {
-                            medium
-                            large
-                            extraLarge
-                        }
-                        bannerImage
+                        type                        
                     }
                     relationType(version: 2)
                 }

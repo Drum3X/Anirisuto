@@ -1,70 +1,85 @@
-from .query import AnilistQuery
+#python modules
 from aiohttp import ClientSession
+
+#import queries
+from .queries import AnilistQuery
+
+#import parsers
+from .parsers import (
+    ParseAnime, 
+    ParseManga, 
+    ParseCharacter
+)
 
 class AsyncClient(AnilistQuery):
     def __init__(self):
-        super().__init__()
-        self.url = "https://graphql.anilist.co"
+        super().__init__()        
             
-    async def get_data(
+    async def _get_data(
         self,         
         query: str, 
         variables: dict,
     ):                
               								
         async with ClientSession() as cs:
-            async with cs.post(self.url, json = {'query': query, 'variables': variables}) as result:
+            async with cs.post(self._url, json = {"query": query, "variables": variables}) as result:
                 data = await result.json()
                 
         return data
         
     async def get_anime_with_id(
         self, 
-        id: int,
+        id: int, 
     ):
         
-        data = await self.get_data(self.anime_with_id, self.get_id_variables(id))
+        data = await self._get_data(self._anime_with_id, self._get_id_variables(id))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["media"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("media"):
+            return
+          
+        return ParseAnime(result)
         
     async def get_manga_with_id(
         self, 
-        id: str,
+        id: str, 
     ):
         
-        data = await self.get_data(self.manga_with_id, self.get_id_variables(id))
+        data = await self._get_data(self._manga_with_id, self._get_id_variables(id))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["media"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("media"):
+            return
+       
+        return ParseManga(result)
         
     async def get_character_with_id(
         self, 
-        id: int,
+        id: int, 
     ):
         
-        data = await self.get_data(self.character_with_id, self.get_id_variables(id))
+        data = await self._get_data(self._character_with_id, self._get_id_variables(id))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["characters"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("characters"):
+            return
+   
+        return ParseCharacter(result)
       
     async def get_anime(
         self, 
@@ -72,16 +87,18 @@ class AsyncClient(AnilistQuery):
         page: int = 1
     ):
         
-        data = await self.get_data(self.anime, self.get_search_variables(search, page))
+        data = await self._get_data(self._anime, self._get_search_variables(search, page))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["media"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("media"):
+            return
+  
+        return ParseAnime(result)
        
     async def get_manga(
         self, 
@@ -89,16 +106,18 @@ class AsyncClient(AnilistQuery):
         page: int = 1
     ):
         
-        data = await self.get_data(self.manga, self.get_search_variables(search, page))
+        data = await self._get_data(self._manga, self._get_search_variables(search, page))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["media"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("media"):
+            return
+
+        return ParseManga(result)
         
     async def get_character(
         self, 
@@ -106,13 +125,15 @@ class AsyncClient(AnilistQuery):
         page: int = 1
     ):
         
-        data = await self.get_data(self.character, self.get_search_variables(search, page))
+        data = await self._get_data(self._character, self._get_search_variables(search, page))
         
         if "errors" in data.keys():
-            return data["errors"][0]["message"]
+            return 
             
-        result = data["data"]["Page"]["characters"]
-        if result == []:
-            return None
-            
-        return result
+        result = data.get("data")
+        page = result.get("Page")
+        
+        if not page.get("characters"):
+            return
+ 
+        return ParseCharacter(result)        
