@@ -3,26 +3,22 @@
 
 # Installing
 ```sh
-apt install git 
-apt install python3
-apt install python3-pip
-git clone https://github.com/Drum3X/Simple-Python-Anilist-Api.git
-pip3 install -r requirements.txt
+pip install Anirisuto
 ```
 
 # How To Use
 
 # Sync Import
 ```py
-from <api file name> import SyncClient
+from Anirisuto import SyncClient
 ```
 
 # Async Import
 ```py
-from <api file name> import AsyncClient
+from Anirisuto import AsyncClient
 ```
 
-# Functions
+# Use
 ```py
 client = SyncClient()
 
