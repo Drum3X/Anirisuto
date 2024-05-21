@@ -1,37 +1,40 @@
-#python modules
 from re import compile, sub
+
 
 class ParseManga():
     def __init__(self, data):
         self.raw = data    
         self.page = self.raw.get("Page")  
         self.media = self.page.get("media")     
-             
+ 
         if self.media:
             self.data = self.media[0]
         else:       	   
-        	   self.data = {}        
+            self.data = {}
 
-    def page_info(self):        
-        	   return self.page.get("pageInfo")        	   
-        	               
+    def page_info(self):
+        return self.page.get("pageInfo")        	   
+      
     def id(self):       
         return self.data.get("id")                    
-            
+
     def title(self, lang: str = "romaji"):                        
         title = self.data.get("title")
-        
+
+        if not title:
+            return
+
         return title.get(lang, title.get("romaji"))                     
  
     def url(self):        
         return self.data.get("siteUrl")
-                            
+
     def volumes(self):       
         return self.data.get("volumes")
-                           
+
     def chapters(self):        
         return self.data.get("chapters")
-                                   
+
     def description(self):        
         desc = self.data.get("description")
             
@@ -41,64 +44,67 @@ class ParseManga():
         tag = compile("<.*?>")
         
         return sub(tag, "", desc)
-                   
+
     def format(self):        
         return self.data.get("format")
-                       
+
     def status(self):       
         return self.data.get("status")
 
     def genres(self):      
         return self.data.get("genres")
-                                
+
     def is_adult(self):       
         return self.data.get("isAdult")                   
-            
+
     def tags(self):        
         tags = self.data.get("tags")
-            
+    
         if not tags:
             return 
-                
+    
         list = [tag.get("name") for tag in tags]
-                                       
+
         return list                                              
         
     def studios(self):        
         studios = self.data.get("studios")
-            
+
         if studios:                            
             return studios.get("nodes")
-                               
+
     def start_date(self):                
         return self.data.get("startDate")
 
     def end_date(self):        
-        date = self.data.get("endDate")
+        return self.data.get("endDate")
 
     def season(self):        
         return self.data.get("season")
         
     def origin(self):        
         return self.data.get("countryOfOrigin")        
-                        
+
     def image(self, size: str = "large"):                
         image = self.data.get("coverImage")
         
+        if not image:
+            return
+
         return image.get(size, image.get("large"))                     
         
     def banner(self):       
         return self.data.get("bannerImage")                  
             
     def source(self):        
-        source = self.data.get("source")
+        return self.data.get("source")
 
     def hashtag(self):        
         return self.data.get("hashtag")
-                                
+
     def synonyms(self):        
         return self.data.get("synonyms")
-                                
+
     def score(self, type: str = "mean"):
         keys = {
             "mean": "meanScore", 
@@ -106,13 +112,13 @@ class ParseManga():
         }
 
         return self.data.get(keys.get(type, "meanScore"))                       
-                 
+
     def popularity(self):        
         return self.data.get("popularity")                    
-            
+
     def rankings(self):        
         return self.data.get("rankings")
-                      
+
     def trailer(self):        
         trailer = self.data.get("trailer")
             
@@ -129,9 +135,14 @@ class ParseManga():
             dict["link"] = "https://youtu.be/" + trailer.get("id")
                
         return dict
-                                
+
     def staff(self):        
-        staffs = self.data.get("staff").get("edges")
+        staffs = self.data.get("staff")
+        
+        if not staffs:
+            return
+
+        staffs = staffs.get("edges")
             
         if not staffs:
             return 
@@ -151,10 +162,14 @@ class ParseManga():
             list.append(dict)
                 
         return list
-            
-            
+
     def characters(self):
-        characters = self.data.get("characters").get("edges")
+        characters = self.data.get("characters")
+
+        if not characters:
+            return
+
+        characters = characters.get("edges")
             
         if not characters:
             return 
@@ -176,7 +191,12 @@ class ParseManga():
         return list   
             
     def relations(self):
-        relations = self.data.get("relations").get("edges")
+        relations = self.data.get("relations")
+
+        if not relations:
+            return 
+        
+        relations = relations.get("edges")
             
         if not relations:
             return 
@@ -193,4 +213,3 @@ class ParseManga():
             list.append(dict)
                 
         return list
-            
