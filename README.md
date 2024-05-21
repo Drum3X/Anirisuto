@@ -1,4 +1,4 @@
-
+# A wrapper for anilist
 
 
 # Installing
