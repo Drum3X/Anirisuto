@@ -1,24 +1,24 @@
-# A wrapper for anilist
+# Anirisuto
+A wrapper for anilist
 
-
-# Installing
+## Installing
 ```sh
 pip install Anirisuto
 ```
 
-# How To Use
+## How To Use
 
-# Sync Import
+## Sync Import
 ```py
 from Anirisuto import SyncClient
 ```
 
-# Async Import
+## Async Import
 ```py
 from Anirisuto import AsyncClient
 ```
 
-# Use
+## Use
 ```py
 client = SyncClient()
 
